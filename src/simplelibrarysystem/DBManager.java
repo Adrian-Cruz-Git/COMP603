@@ -54,9 +54,11 @@ public final class DBManager {
                     + "BARCODE VARCHAR(255) UNIQUE)";
             statement.executeUpdate(tableToBeCreated);
         } catch (SQLException ex) {
+            // this just checks that the table already exists
             if (ex.getSQLState().equals("X0Y32")) {
                 System.out.println("Table already exists");
             } else {
+                // if its a different error than show it.
                 throw ex;
             }
         }
