@@ -6,6 +6,8 @@ package simplelibrarysystem;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,7 +24,23 @@ public class updateButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int bookId = booksMenu.getSelectedBookId();
+        if (bookId == -1){
+            booksMenu.showMessage("Please select a book to delete.", "no selection made", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        int response = JOptionPane.showConfirmDialog(booksMenu, "Are you sure?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+        if (response == JOptionPane.YES_OPTION){
+            try {
+                bookDatabase.deleteBook(bookId);
+                booksMenu.showMessage("book successfully deleted", "Success", JOptionPane.INFORMATION_MESSAGE);
+                booksMenu.refreshBookTable();
+                booksMenu.clearFormFields();
+            } catch (SQLException ex){
+                booksMenu.showMessage("Failed to delete book from database" + ex.getMessage(), "database error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
     
 }

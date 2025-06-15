@@ -32,13 +32,9 @@ public class AddButtonListener implements ActionListener {
             booksMenu.showMessage("Title and Author areas cannot be left empty", "Info Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        try {
-            bookDatabase.addBook(new Book(title, author, barcode));
-            booksMenu.showMessage("book added", "Success", JOptionPane.INFORMATION_MESSAGE);
-            booksMenu.refreshBookTable();
-            booksMenu.clearFormFields();
-        } catch (Exception ex) {
-            booksMenu.showMessage("failed to add book to database" + ex.getMessage(), "DB error", JOptionPane.ERROR_MESSAGE);
-        }
+        bookDatabase.addBook(new Book(title, author, barcode));
+        booksMenu.showMessage("book added", "Success", JOptionPane.INFORMATION_MESSAGE);
+        booksMenu.refreshBookTable();
+        booksMenu.clearFormFields();
     }
 }
