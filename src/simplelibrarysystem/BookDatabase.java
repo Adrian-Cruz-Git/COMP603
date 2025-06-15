@@ -41,7 +41,7 @@ public class BookDatabase {
         List<Book> books = new ArrayList<>();
         try {
             Statement statment = conn.createStatement();
-            ResultSet rs = conn.myQuery("select * from BOOKS");
+            ResultSet rs = statment.executeQuery("select * from BOOKS");
             while(rs.next()){
                 String title = rs.getString("TITLE");
                 String author = rs.getString("AUTHOR");
