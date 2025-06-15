@@ -43,11 +43,12 @@ public class BookDatabase {
             Statement statment = conn.createStatement();
             ResultSet rs = statment.executeQuery("SELECT * FROM BOOKS");
             while(rs.next()){
+                int id = rs.getInt("ID");
                 String title = rs.getString("TITLE");
                 String author = rs.getString("AUTHOR");
                 String barcode = rs.getString("BARCODE");
                 
-                Book book = new Book(title, author, barcode);
+                Book book = new Book(id,title, author, barcode);
                 books.add(book);
             }
         } catch(SQLException ex){

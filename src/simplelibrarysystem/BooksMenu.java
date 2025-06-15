@@ -27,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Donut
  */
-public class BooksMenu extends JFrame {
+public final class BooksMenu extends JFrame {
 
     // components
     private final BookDatabase bookDatabase;
@@ -49,6 +49,7 @@ public class BooksMenu extends JFrame {
         createComponents();
         createLayout();
         createListeners();
+        refreshBookTable();
     }
 
     private void createComponents() {
