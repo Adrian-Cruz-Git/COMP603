@@ -56,11 +56,28 @@ public class BookDatabase {
         return books;
     }
     
-    public void updateBook(){
-        
+    public void updateBook(Book book) throws SQLException{
+        String sql = "update BOOKS set TITLE = ?, AUTHOR = ?, BARCODE = ? where ID = ?";
+        try{
+            PreparedStatement pS = conn.prepareStatement(sql);
+            pS.setString(1, book.getTitle());
+            pS.setString(2, book.getAuthor());
+            pS.setString(3, book.getBarcode());
+            pS.setInt(4, book.getId());
+            pS.executeUpdate();
+        } catch (SQLException ex){
+            throw ex;
+        }
     }
     
-    public void deleteBook(){
-        
+    public void deleteBook(int bookId) throws SQLException{
+        String sql = "delete from BOOKS where ID = ?";
+        try{
+            PreparedStatement pS = conn.prepareStatement(sql);
+            pS.setInt(1, bookId);
+            pS.executeUpdate();
+        } catch (SQLException ex){
+            throw ex;
+        }
     }
 }
