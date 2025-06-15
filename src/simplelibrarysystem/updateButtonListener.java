@@ -30,17 +30,18 @@ public class updateButtonListener implements ActionListener {
             return;
         }
         
-        int response = JOptionPane.showConfirmDialog(booksMenu, "Are you sure?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
-        if (response == JOptionPane.YES_OPTION){
-            try {
-                bookDatabase.deleteBook(bookId);
-                booksMenu.showMessage("book successfully deleted", "Success", JOptionPane.INFORMATION_MESSAGE);
+        String title = booksMenu.getTitleField().getText();
+        String author = booksMenu.getAuthorField().getText();
+        String barcode = booksMenu.getbarcodeField().getText();
+        
+        try {
+                bookDatabase.updateBook(new Book(bookId, title, author, barcode));
+                booksMenu.showMessage("book successfully updated", "Success", JOptionPane.INFORMATION_MESSAGE);
                 booksMenu.refreshBookTable();
                 booksMenu.clearFormFields();
             } catch (SQLException ex){
-                booksMenu.showMessage("Failed to delete book from database" + ex.getMessage(), "database error", JOptionPane.ERROR_MESSAGE);
+                booksMenu.showMessage("Failed to update book from database" + ex.getMessage(), "database error", JOptionPane.ERROR_MESSAGE);
             }
-        }
     }
     
 }
