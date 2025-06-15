@@ -12,13 +12,16 @@ import java.awt.event.ActionListener;
  * @author Donut
  */
 public class deleteButtonListener implements ActionListener {
+    private final BooksMenu booksMenu;
+    private final BookDatabase bookDatabase;
 
-    public deleteButtonListener(BooksMenu aThis, BookDatabase bookDatabase) {
+    public deleteButtonListener(BooksMenu booksMenu, BookDatabase bookDatabase) {
+        this.booksMenu = booksMenu;
+        this.bookDatabase = bookDatabase;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
     }
-    
 }

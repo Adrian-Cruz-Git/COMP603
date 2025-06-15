@@ -7,10 +7,12 @@ package simplelibrarysystem;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -102,7 +104,7 @@ public class BooksMenu extends JFrame {
         addButton.addActionListener(new AddButtonListener(this, bookDatabase));
         updateButton.addActionListener(new updateButtonListener(this, bookDatabase));
         deleteButton.addActionListener(new deleteButtonListener(this, bookDatabase));
-        clearButton.addActionListener(new clearButtonListener(this, bookDatabase));
+        clearButton.addActionListener(new clearButtonListener(this));
         bookTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 handleTableSelection();
@@ -134,5 +136,28 @@ public class BooksMenu extends JFrame {
             authorField.setText((String) tableModel.getValueAt(selectedRow, 2));
             barcodeField.setText((String) tableModel.getValueAt(selectedRow, 3));
         }
+    }
+    
+    public void refreshBookTable() {
+        // reloads the books within the frame
+        List<Book> books = bookDatabase.getAllBooks();
+        tableModel.setRowCount(0);
+        for (Book book : books) {
+            tableModel.addRow(new Object[]{book.getId(), book.getTitle(), book.getAuthor(), book.getBarcode()});
+        }
+    }
+    
+    public void clearFormFields() {
+        // clears the text boxs specifically used to clear text boxes after an attempt to add a new book
+        titleField.setText("");
+        authorField.setText("");
+        barcodeField.setText("");
+        bookTable.clearSelection();
+        selectedBookId = -1;
+    }
+
+    public void showMessage(String message, String title, int messageType) {
+        // shows popup for the messages
+        JOptionPane.showMessageDialog(this, message, title, messageType);
     }
 }

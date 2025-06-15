@@ -12,13 +12,15 @@ import java.awt.event.ActionListener;
  * @author Donut
  */
 public class clearButtonListener implements ActionListener {
+    private final BooksMenu booksMenu;
 
-    public clearButtonListener(BooksMenu aThis, BookDatabase bookDatabase) {
+    public clearButtonListener(BooksMenu booksMenu) {
+        this.booksMenu = booksMenu;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.booksMenu.clearFormFields();
     }
     
 }

@@ -6,6 +6,7 @@ package simplelibrarysystem;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -13,12 +14,31 @@ import java.awt.event.ActionListener;
  */
 public class AddButtonListener implements ActionListener {
 
-    public AddButtonListener(BooksMenu aThis, BookDatabase bookDatabase) {
+    private final BooksMenu booksMenu;
+    private final BookDatabase bookDatabase;
+
+    public AddButtonListener(BooksMenu booksMenu, BookDatabase bookDatabase) {
+        this.booksMenu = booksMenu;
+        this.bookDatabase = bookDatabase;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String title = booksMenu.getTitleField().getText();
+        String author = booksMenu.getAuthorField().getText();
+        String barcode = booksMenu.getbarcodeField().getText();
+
+        if (title.trim().isEmpty() || author.trim().isEmpty()) {
+            booksMenu.showMessage("Title and Author areas cannot be left empty", "Info Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            bookDatabase.addBook(new Book(title, author, barcode));
+            booksMenu.showMessage("book added", "Success", JOptionPane.INFORMATION_MESSAGE);
+            booksMenu.refreshBookTable();
+            booksMenu.clearFormFields();
+        } catch (Exception ex) {
+            booksMenu.showMessage("failed to add book to database" + ex.getMessage(), "DB error", JOptionPane.ERROR_MESSAGE);
+        }
     }
-    
 }

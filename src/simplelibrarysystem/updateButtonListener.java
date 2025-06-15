@@ -12,8 +12,12 @@ import java.awt.event.ActionListener;
  * @author Donut
  */
 public class updateButtonListener implements ActionListener {
+    private final BooksMenu booksMenu;
+    private final BookDatabase bookDatabase;
 
-    public updateButtonListener(BooksMenu aThis, BookDatabase bookDatabase) {
+    public updateButtonListener(BooksMenu booksMenu, BookDatabase bookDatabase) {
+        this.booksMenu = booksMenu;
+        this.bookDatabase = bookDatabase;
     }
 
     @Override
