@@ -4,10 +4,17 @@
  */
 package simplelibrarysystem;
 
+import javax.swing.JTextField;
+
 /**
  *
  * @author Donut
  */
 public class LoginMenu {
+    private JTextField username;
+    private JTextField password;
     
+    public LoginMenu (){
+        
+    }
 }
