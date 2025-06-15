@@ -14,11 +14,11 @@ public class Book {
     private String author;
     private String barcode;
     
-    public Book(int id, String title, String author, String isbn) {
+    public Book(int id, String title, String author, String barcode) {
         this.id = id;
         this.title = title;
         this.author = author;
-        this.barcode = isbn;
+        this.barcode = barcode;
     }
 
     public Book(String title, String author, String barcode) {

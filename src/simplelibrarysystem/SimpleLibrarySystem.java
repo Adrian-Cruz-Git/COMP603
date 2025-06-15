@@ -4,6 +4,8 @@
  */
 package simplelibrarysystem;
 
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author Donut
@@ -15,6 +17,10 @@ public class SimpleLibrarySystem {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+         SwingUtilities.invokeLater(() -> {
+            BooksMenu mainFrame = new BooksMenu();
+            mainFrame.setVisible(true);
+        });
     }
     
 }

@@ -5,10 +5,13 @@
 package simplelibrarysystem;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -72,13 +75,26 @@ public class BooksMenu extends JFrame {
 
         // this is the center panel
         add(new JScrollPane(bookTable), BorderLayout.CENTER);
+        
+        add(createBottomPanel(), BorderLayout.SOUTH);
 
-        // for the bottom panel
-        JPanel bottomPanel = new JPanel(new BorderLayout(10, 10));
-        bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding
-
-        // fillout information panel
-        JPanel infoPanel = new JPanel(new GridLayout(0, 2, 5, 5));
+    }
+    
+    private JPanel createBottomPanel(){
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
+        bottomPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        
+        bottomPanel.add(createInfoPanel());
+        
+        bottomPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        
+        bottomPanel.add(createButtonPanel());
+        return bottomPanel;
+    }
+    
+    private JPanel createInfoPanel(){
+        JPanel infoPanel = new JPanel(new GridLayout(0, 2, 10, 5));
         infoPanel.setBorder(BorderFactory.createTitledBorder("Book Details"));
         
         infoPanel.add(new JLabel("Title:"));
@@ -87,18 +103,24 @@ public class BooksMenu extends JFrame {
         infoPanel.add(authorField);
         infoPanel.add(new JLabel("Barcode:"));
         infoPanel.add(barcodeField);
-
-        //buttons
+        
+        return infoPanel;
+    }
+    
+    private JPanel createButtonPanel(){
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        
         buttonPanel.add(addButton);
         buttonPanel.add(updateButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(clearButton);
         
-        //  putting panels together
-        bottomPanel.add(infoPanel, BorderLayout.CENTER);
-        bottomPanel.add(buttonPanel, BorderLayout.SOUTH);
+        return buttonPanel;
     }
+    
+    
+    
+    
 
     private void createListeners() {
         addButton.addActionListener(new AddButtonListener(this, bookDatabase));

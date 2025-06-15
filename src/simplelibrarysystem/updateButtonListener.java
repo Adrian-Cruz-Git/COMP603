@@ -26,7 +26,7 @@ public class updateButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         int bookId = booksMenu.getSelectedBookId();
         if (bookId == -1){
-            booksMenu.showMessage("Please select a book to delete.", "no selection made", JOptionPane.WARNING_MESSAGE);
+            booksMenu.showMessage("Please select a book to update.", "no selection made", JOptionPane.WARNING_MESSAGE);
             return;
         }
         

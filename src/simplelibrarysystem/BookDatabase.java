@@ -41,7 +41,7 @@ public class BookDatabase {
         List<Book> books = new ArrayList<>();
         try {
             Statement statment = conn.createStatement();
-            ResultSet rs = statment.executeQuery("select * from BOOKS");
+            ResultSet rs = statment.executeQuery("SELECT * FROM BOOKS");
             while(rs.next()){
                 String title = rs.getString("TITLE");
                 String author = rs.getString("AUTHOR");
@@ -71,7 +71,7 @@ public class BookDatabase {
     }
     
     public void deleteBook(int bookId) throws SQLException{
-        String sql = "delete from BOOKS where ID = ?";
+        String sql = "DELETE FROM BOOKS WHERE ID = ?";
         try{
             PreparedStatement pS = conn.prepareStatement(sql);
             pS.setInt(1, bookId);
