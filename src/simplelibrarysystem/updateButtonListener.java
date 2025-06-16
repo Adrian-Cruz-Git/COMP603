@@ -6,7 +6,6 @@ package simplelibrarysystem;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -39,7 +38,7 @@ public class updateButtonListener implements ActionListener {
                 booksMenu.showMessage("book successfully updated", "Success", JOptionPane.INFORMATION_MESSAGE);
                 booksMenu.refreshBookTable();
                 booksMenu.clearFormFields();
-            } catch (SQLException ex){
+            } catch (Exception ex){
                 booksMenu.showMessage("Failed to update book from database" + ex.getMessage(), "database error", JOptionPane.ERROR_MESSAGE);
             }
     }

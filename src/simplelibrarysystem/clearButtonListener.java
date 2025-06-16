@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
  * @author Donut
  */
 public class clearButtonListener implements ActionListener {
+
     private final BooksMenu booksMenu;
 
     public clearButtonListener(BooksMenu booksMenu) {
@@ -22,5 +23,5 @@ public class clearButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         this.booksMenu.clearFormFields();
     }
-    
+
 }

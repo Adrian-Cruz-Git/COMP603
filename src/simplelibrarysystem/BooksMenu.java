@@ -76,52 +76,48 @@ public final class BooksMenu extends JFrame {
 
         // this is the center panel
         add(new JScrollPane(bookTable), BorderLayout.CENTER);
-        
+
         add(createBottomPanel(), BorderLayout.SOUTH);
 
     }
-    
-    private JPanel createBottomPanel(){
+
+    private JPanel createBottomPanel() {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-        
+
         bottomPanel.add(createInfoPanel());
-        
+
         bottomPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        
+
         bottomPanel.add(createButtonPanel());
         return bottomPanel;
     }
-    
-    private JPanel createInfoPanel(){
+
+    private JPanel createInfoPanel() {
         JPanel infoPanel = new JPanel(new GridLayout(0, 2, 10, 5));
         infoPanel.setBorder(BorderFactory.createTitledBorder("Book Details"));
-        
+
         infoPanel.add(new JLabel("Title:"));
         infoPanel.add(titleField);
         infoPanel.add(new JLabel("Author:"));
         infoPanel.add(authorField);
         infoPanel.add(new JLabel("Barcode:"));
         infoPanel.add(barcodeField);
-        
+
         return infoPanel;
     }
-    
-    private JPanel createButtonPanel(){
+
+    private JPanel createButtonPanel() {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-        
+
         buttonPanel.add(addButton);
         buttonPanel.add(updateButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(clearButton);
-        
+
         return buttonPanel;
     }
-    
-    
-    
-    
 
     private void createListeners() {
         addButton.addActionListener(new AddButtonListener(this, bookDatabase));
@@ -160,7 +156,7 @@ public final class BooksMenu extends JFrame {
             barcodeField.setText((String) tableModel.getValueAt(selectedRow, 3));
         }
     }
-    
+
     public void refreshBookTable() {
         // reloads the books within the frame
         List<Book> books = bookDatabase.getAllBooks();
@@ -169,7 +165,7 @@ public final class BooksMenu extends JFrame {
             tableModel.addRow(new Object[]{book.getId(), book.getTitle(), book.getAuthor(), book.getBarcode()});
         }
     }
-    
+
     public void clearFormFields() {
         // clears the text boxs specifically used to clear text boxes after an attempt to add a new book
         titleField.setText("");
