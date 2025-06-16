@@ -4,94 +4,52 @@
  */
 package simplelibrarysystem;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Donut
  */
-public final class MembersMenu extends JPanel {
+public final class MembersMenu extends AbstractManagementPanel<Member> {
     
     private final MembersDatabase membersDatabase;
-    
-    private JTable memberTable;
-    private DefaultTableModel tableModel;
     private JTextField nameField, emailField, phoneField;
-    private JButton addButton, updateButton, deleteButton, clearButton;
-    
-    private int selectedMemberId = -1;
-    
     
     public MembersMenu(){
+         super(); // This calls the constructor of AbstractManagementPanel to build the common UI
         this.membersDatabase = new MembersDatabase();
-        setLayout(new BorderLayout(10, 10));
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        
-        createMemberMenuComponents();
-        createMemberLayout();
-        createMemberListeners();
-        
-        refreshMemberTable();
-    }
-    
-    private void createMemberMenuComponents(){
-        String[] columnNames = {"ID", "Name", "Email", "Phonenumber"};
-        tableModel = new DefaultTableModel(columnNames, 0) {
-            @Override
-            public boolean isCellEditable(int r, int c) {
-                return false;
-            }
-        };
-        
-        memberTable = new JTable(tableModel);
-        memberTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
-        nameField = new JTextField(20);
-        emailField = new JTextField(20);
-        phoneField = new JTextField(20);
-        
-        addButton = new JButton("Add Member");
-        updateButton = new JButton("Update Member");
-        deleteButton = new JButton("Delete Member");
-        clearButton = new JButton("Clear Form");
-    }
-    
-    private void createMemberLayout(){
-        add(new JScrollPane(memberTable), BorderLayout.CENTER);
-        
-        add(createBottomPanel(), BorderLayout.SOUTH);
-    }
-    
-    private JPanel createBottomPanel() {
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
 
-        bottomPanel.add(createInfoPanel());
-        bottomPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacer
-        bottomPanel.add(createButtonPanel());
-
-        return bottomPanel;
+        // Customize the button text for this specific panel
+        addButton.setText("Add Member");
+        updateButton.setText("Update Member");
+        deleteButton.setText("Delete Member");
+        
+        // Load the initial data
+        refreshTable();
     }
     
-    private JPanel createInfoPanel() {
+     @Override
+    protected String[] getColumnNames() {
+        return new String[]{"ID", "Name", "Email", "Phone"};
+    }
+    
+    @Override
+    protected JPanel createFormPanel() {
         JPanel infoPanel = new JPanel(new GridLayout(0, 2, 10, 5));
         infoPanel.setBorder(BorderFactory.createTitledBorder("Member Details"));
 
+        // Initialize the specific text fields for members
+        nameField = new JTextField(20);
+        emailField = new JTextField(20);
+        phoneField = new JTextField(20);
+
+        // Add the fields and their labels to the panel
         infoPanel.add(new JLabel("Name:"));
         infoPanel.add(nameField);
         infoPanel.add(new JLabel("Email:"));
@@ -102,36 +60,70 @@ public final class MembersMenu extends JPanel {
         return infoPanel;
     }
     
-    private JPanel createButtonPanel() {
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-
-        buttonPanel.add(addButton);
-        buttonPanel.add(updateButton);
-        buttonPanel.add(deleteButton);
-        buttonPanel.add(clearButton);
-
-        return buttonPanel;
+     @Override
+    protected Object[] convertItemToRow(Member member) {
+        return new Object[]{member.getId(), member.getName(), member.getEmail(), member.getPhonenumber()};
     }
     
-    private void createMemberListeners(){
-        addButton.addActionListener(new addMemberListener(this, membersDatabase));
-        updateButton.addActionListener(new updateMemberListener(this, membersDatabase));
-        deleteButton.addActionListener(new deleteMemberListener(this, membersDatabase));
-        clearButton.addActionListener(new clearFormFieldsListener(this, membersDatabase));
-
-        // Listener for table row selection
-        memberTable.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                handleTableSelection();
-            }
-        });
+     @Override
+    protected List<Member> getAllItemsFromDatabase() {
+        return membersDatabase.getAllMembers();
     }
     
-    public void refreshMemberTable() {
-        List<Member> members = membersDatabase.getAllMembers();
-        tableModel.setRowCount(0); // Clear existing data
-        for (Member member : members) {
-            tableModel.addRow(new Object[]{member.getId(), member.getName(), member.getEmail(), member.getPhonenumber()});
+    @Override
+    protected void populateFormWithSelectedItem() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow != -1) {
+            nameField.setText((String) tableModel.getValueAt(selectedRow, 1));
+            emailField.setText((String) tableModel.getValueAt(selectedRow, 2));
+            phoneField.setText((String) tableModel.getValueAt(selectedRow, 3));
+        }
+    }
+    
+    @Override
+    protected void clearFormFields() {
+        nameField.setText("");
+        emailField.setText("");
+        phoneField.setText("");
+        resetSelection(); // Call the common method from the base class
+    }
+    
+    @Override
+    protected void performAdd() {
+        if (nameField.getText().trim().isEmpty() || emailField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Name and Email cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Member member = new Member(nameField.getText(), emailField.getText(), phoneField.getText());
+        membersDatabase.addMember(member);
+        refreshTable();
+        clearFormFields();
+    }
+    
+    @Override
+    protected void performUpdate() {
+        if (selectedItemId == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a member to update.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Member member = new Member(nameField.getText(), emailField.getText(), phoneField.getText());
+        member.setId(selectedItemId); // Crucial step for the WHERE clause in SQL
+        membersDatabase.updateMember(member);
+        refreshTable();
+        clearFormFields();
+    }
+    
+    @Override
+    protected void performDelete() {
+        if (selectedItemId == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a member to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this member?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            membersDatabase.deleteMember(selectedItemId);
+            refreshTable();
+            clearFormFields();
         }
     }
 }

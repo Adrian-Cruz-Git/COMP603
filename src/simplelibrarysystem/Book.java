@@ -28,6 +28,10 @@ public class Book {
         this.barcode = barcode;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
