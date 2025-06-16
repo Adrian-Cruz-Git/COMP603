@@ -16,7 +16,7 @@ import java.sql.Statement;
 public final class DBManager {
 
     private static final String URL = "jdbc:derby:LibraryDB;create=true";
-    private static final DBManager dBManager = new DBManager();
+    private static DBManager dBManager = new DBManager();
     private Connection conn;
 
     private DBManager() {
@@ -45,6 +45,27 @@ public final class DBManager {
     public static DBManager getInstance() {
         return dBManager;
     }
+    
+    public void shutdown() {
+    try {
+        if (conn != null && !conn.isClosed()) {
+            // Derby requires a special shutdown command via the URL
+            DriverManager.getConnection("jdbc:derby:;shutdown=true");
+        }
+    } catch (SQLException e) {
+        // A successful shutdown in Derby throws SQLState XJ015.
+        // We can safely ignore this specific exception.
+        if (!e.getSQLState().equals("XJ015")) {
+            System.err.println("Database shutdown failed: " + e.getMessage());
+        } else {
+            System.out.println("Database shutdown successful.");
+        }
+    } finally {
+        // Reset the singleton instance so it can be re-created on the next call to getInstance()
+        dBManager = null;
+        conn = null;
+    }
+}
 
     private void createTablesForBooks() throws SQLException {
         try {

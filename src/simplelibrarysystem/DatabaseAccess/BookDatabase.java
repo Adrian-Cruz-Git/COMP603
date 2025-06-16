@@ -4,7 +4,6 @@
  */
 package simplelibrarysystem.DatabaseAccess;
 
-import simplelibrarysystem.DatabaseAccess.DBManager;
 import simplelibrarysystem.model.Book;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +21,11 @@ public class BookDatabase {
 
     private final Connection conn;
 
-    public BookDatabase() {
+    public BookDatabase() throws SQLException{
         this.conn = DBManager.getInstance().getConnection();
     }
 
-    public void addBook(Book book) {
+    public void addBook(Book book) throws SQLException {
         String sql = "INSERT INTO BOOKS (TITLE, AUTHOR, BARCODE) VALUES(?, ?, ?)";
         try {
             PreparedStatement pS = conn.prepareStatement(sql);
@@ -35,11 +34,11 @@ public class BookDatabase {
             pS.setString(3, book.getBarcode());
             pS.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println("Error with:" + ex.getMessage());
+            throw ex;
         }
     }
 
-    public List<Book> getAllBooks() {
+    public List<Book> getAllBooks() throws SQLException {
         List<Book> books = new ArrayList<>();
         try {
             Statement statment = conn.createStatement();
@@ -54,12 +53,12 @@ public class BookDatabase {
                 books.add(book);
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            throw ex;
         }
         return books;
     }
 
-    public void updateBook(Book book) {
+    public void updateBook(Book book) throws SQLException {
         String sql = "update BOOKS set TITLE = ?, AUTHOR = ?, BARCODE = ? where ID = ?";
         try {
             PreparedStatement pS = conn.prepareStatement(sql);
@@ -69,18 +68,18 @@ public class BookDatabase {
             pS.setInt(4, book.getId());
             pS.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println("Error with updating book: " + ex);
+            throw ex;
         }
     }
 
-    public void deleteBook(int bookId) {
+    public void deleteBook(int bookId) throws SQLException {
         String sql = "DELETE FROM BOOKS WHERE ID = ?";
         try {
             PreparedStatement pS = conn.prepareStatement(sql);
             pS.setInt(1, bookId);
             pS.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println("Error with deleting book: " + ex);
+            throw ex;
         }
     }
 }

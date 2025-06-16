@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Mon Jun 16 21:14:48 NZST 2025:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0197-7805-14ce-00001f2f3500 
-on database directory C:\Users\Donut\OneDrive\Documents\NetBeansProjects\SimpleLibrarySystem\LibraryDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@3f99bd52 
+Mon Jun 16 22:02:40 NZST 2025:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0197-7830-e84d-00001f211890 
+on database directory C:\Users\Donut\OneDrive\Documents\NetBeansProjects\SimpleLibrarySystem\LibraryDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@70dea4e 
 Loaded from file:/C:/Users/Donut/OneDrive/Documents/NetBeansProjects/SimpleLibrarySystem/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=21.0.5+9-LTS-239
@@ -11,3 +11,9 @@ os.arch=amd64
 os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Mon Jun 16 22:02:41 NZST 2025: Shutting down Derby engine
+----------------------------------------------------------------
+Mon Jun 16 22:02:41 NZST 2025:
+Shutting down instance a816c00e-0197-7830-e84d-00001f211890 on database directory C:\Users\Donut\OneDrive\Documents\NetBeansProjects\SimpleLibrarySystem\LibraryDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@70dea4e 
+----------------------------------------------------------------
