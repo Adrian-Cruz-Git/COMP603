@@ -4,12 +4,15 @@
  */
 package simplelibrarysystem.view;
 
-import simplelibrarysystem.view.AbstractManagementPanel;
 import simplelibrarysystem.model.Book;
 import java.awt.GridLayout;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import simplelibrarysystem.DatabaseAccess.BookDatabase;
@@ -36,7 +39,7 @@ public final class BooksMenu extends AbstractManagementPanel<Book> {
 
     @Override
     protected String[] getColumnNames() {
-        return new String[]{"ID", "Title", "Author", "ISBN"};
+        return new String[]{"ID", "Title", "Author", "Barcode"};
     }
 
     @Override
@@ -48,7 +51,7 @@ public final class BooksMenu extends AbstractManagementPanel<Book> {
         titleField = new JTextField(20);
         authorField = new JTextField(20);
         barcodeField = new JTextField(20);
-        
+
         infoPanel.add(new JLabel("Title:"));
         infoPanel.add(titleField);
         infoPanel.add(new JLabel("Author:"));
@@ -63,10 +66,15 @@ public final class BooksMenu extends AbstractManagementPanel<Book> {
     protected Object[] convertItemToRow(Book book) {
         return new Object[]{book.getId(), book.getTitle(), book.getAuthor(), book.getBarcode()};
     }
-    
+
     @Override
     protected List<Book> getAllItemsFromDatabase() {
-        return bookDatabase.getAllBooks();
+        try {
+            return bookDatabase.getAllBooks();
+        } catch (SQLException ex) {
+            Logger.getLogger(BooksMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override
@@ -78,7 +86,7 @@ public final class BooksMenu extends AbstractManagementPanel<Book> {
             barcodeField.setText((String) tableModel.getValueAt(selectedRow, 3));
         }
     }
-    
+
     @Override
     protected void clearFormFields() {
         titleField.setText("");
@@ -89,26 +97,69 @@ public final class BooksMenu extends AbstractManagementPanel<Book> {
 
     @Override
     protected void performAdd() {
-        Book book = new Book(titleField.getText(), authorField.getText(), barcodeField.getText());
-        bookDatabase.addBook(book);
-        refreshTable();
-        clearFormFields();
+        String title = titleField.getText().trim();
+        String author = authorField.getText().trim();
+        String barcode = barcodeField.getText().trim();
+
+        String errorMessage = validateBookData(title, author, barcode);
+
+        if (errorMessage != null) {
+            JOptionPane.showMessageDialog(this, errorMessage, "Input Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                Book book = new Book(title, author, barcode);
+                bookDatabase.addBook(book);
+                refreshTable();
+                clearFormFields();
+            } catch (SQLException e) {
+                // Handle the case of a duplicate barcode from the DB
+                JOptionPane.showMessageDialog(this, "Error adding book: A book with this Barcode already exists.", "Database Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    public String validateBookData(String title, String author, String barcode) {
+        if (title.isEmpty()) {
+            return "Book title cannot be empty.";
+        }
+        if (author.isEmpty()) {
+            return "Author name cannot be empty.";
+        }
+        if (barcode.isEmpty()) {
+            return "Barcode/ISBN cannot be empty.";
+        }
+        if (!barcode.matches("^[0-9-]+$")) {
+            return "Barcode can only contain numbers and dashes.";
+        }
+        return null; // A null return value indicates success (no error message)
     }
 
     @Override
     protected void performUpdate() {
-        if (selectedItemId == -1) return;
+        if (selectedItemId == -1) {
+            return;
+        }
         Book book = new Book(titleField.getText(), authorField.getText(), barcodeField.getText());
         book.setId(selectedItemId);
-        bookDatabase.updateBook(book);
+        try {
+            bookDatabase.updateBook(book);
+        } catch (SQLException ex) {
+            Logger.getLogger(BooksMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
         refreshTable();
         clearFormFields();
     }
 
     @Override
     protected void performDelete() {
-        if (selectedItemId == -1) return;
-        bookDatabase.deleteBook(selectedItemId);
+        if (selectedItemId == -1) {
+            return;
+        }
+        try {
+            bookDatabase.deleteBook(selectedItemId);
+        } catch (SQLException ex) {
+            Logger.getLogger(BooksMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
         refreshTable();
         clearFormFields();
     }
