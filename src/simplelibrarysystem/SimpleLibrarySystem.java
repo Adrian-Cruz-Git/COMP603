@@ -18,7 +18,7 @@ public class SimpleLibrarySystem {
     public static void main(String[] args) {
         // TODO code application logic here
          SwingUtilities.invokeLater(() -> {
-            BooksMenu mainFrame = new BooksMenu();
+            LoginMenu mainFrame = new LoginMenu();
             mainFrame.setVisible(true);
         });
     }
