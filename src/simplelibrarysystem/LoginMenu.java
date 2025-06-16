@@ -4,6 +4,7 @@
  */
 package simplelibrarysystem;
 
+import simplelibrarysystem.DatabaseAccess.AdminsDatabase;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;

@@ -2,14 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package simplelibrarysystem;
+package simplelibrarysystem.view;
 
+import simplelibrarysystem.view.AbstractManagementPanel;
+import simplelibrarysystem.model.Book;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import simplelibrarysystem.DatabaseAccess.BookDatabase;
 
 /**
  *

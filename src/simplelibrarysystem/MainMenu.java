@@ -4,6 +4,8 @@
  */
 package simplelibrarysystem;
 
+import simplelibrarysystem.view.BooksMenu;
+import simplelibrarysystem.view.MembersMenu;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 

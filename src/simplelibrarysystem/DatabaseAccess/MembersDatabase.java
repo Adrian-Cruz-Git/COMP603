@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package simplelibrarysystem;
+package simplelibrarysystem.DatabaseAccess;
 
+import simplelibrarysystem.DatabaseAccess.DBManager;
+import simplelibrarysystem.model.Member;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
