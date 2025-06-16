@@ -112,7 +112,6 @@ public final class BooksMenu extends AbstractManagementPanel<Book> {
                 refreshTable();
                 clearFormFields();
             } catch (SQLException e) {
-                // Handle the case of a duplicate barcode from the DB
                 JOptionPane.showMessageDialog(this, "Error adding book: A book with this Barcode already exists.", "Database Error", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -126,7 +125,7 @@ public final class BooksMenu extends AbstractManagementPanel<Book> {
             return "Author name cannot be empty.";
         }
         if (barcode.isEmpty()) {
-            return "Barcode/ISBN cannot be empty.";
+            return "Barcode cannot be empty.";
         }
         if (!barcode.matches("^[0-9-]+$")) {
             return "Barcode can only contain numbers and dashes.";

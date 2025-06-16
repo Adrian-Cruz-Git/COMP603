@@ -4,10 +4,12 @@
  */
 package simplelibrarysystem.view;
 
-import simplelibrarysystem.view.AbstractManagementPanel;
 import simplelibrarysystem.model.Member;
 import java.awt.GridLayout;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -70,7 +72,12 @@ public final class MembersMenu extends AbstractManagementPanel<Member> {
     
      @Override
     protected List<Member> getAllItemsFromDatabase() {
-        return membersDatabase.getAllMembers();
+        try {
+            return membersDatabase.getAllMembers();
+        } catch (SQLException ex) {
+            Logger.getLogger(MembersMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
     @Override
@@ -98,7 +105,11 @@ public final class MembersMenu extends AbstractManagementPanel<Member> {
             return;
         }
         Member member = new Member(nameField.getText(), emailField.getText(), phoneField.getText());
-        membersDatabase.addMember(member);
+        try {
+            membersDatabase.addMember(member);
+        } catch (SQLException ex) {
+            Logger.getLogger(MembersMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
         refreshTable();
         clearFormFields();
     }
@@ -111,7 +122,11 @@ public final class MembersMenu extends AbstractManagementPanel<Member> {
         }
         Member member = new Member(nameField.getText(), emailField.getText(), phoneField.getText());
         member.setId(selectedItemId); // Crucial step for the WHERE clause in SQL
-        membersDatabase.updateMember(member);
+        try {
+            membersDatabase.updateMember(member);
+        } catch (SQLException ex) {
+            Logger.getLogger(MembersMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
         refreshTable();
         clearFormFields();
     }
@@ -124,7 +139,11 @@ public final class MembersMenu extends AbstractManagementPanel<Member> {
         }
         int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this member?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
-            membersDatabase.deleteMember(selectedItemId);
+            try {
+                membersDatabase.deleteMember(selectedItemId);
+            } catch (SQLException ex) {
+                Logger.getLogger(MembersMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
             refreshTable();
             clearFormFields();
         }

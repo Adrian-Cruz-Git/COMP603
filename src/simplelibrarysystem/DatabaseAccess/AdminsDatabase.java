@@ -4,7 +4,6 @@
  */
 package simplelibrarysystem.DatabaseAccess;
 
-import simplelibrarysystem.DatabaseAccess.DBManager;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.SQLException;

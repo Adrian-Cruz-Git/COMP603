@@ -4,21 +4,20 @@
  */
 package simplelibrarysystem.view;
 
-import java.util.List;
-import javax.swing.JPanel;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import simplelibrarysystem.model.Book;
 
 /**
  *
  * @author Donut
  */
 public class BooksMenuTest {
+    
+    private BooksMenu booksMenuPanel;
     
     public BooksMenuTest() {
     }
@@ -33,127 +32,70 @@ public class BooksMenuTest {
     
     @Before
     public void setUp() {
+        booksMenuPanel = new BooksMenu();
     }
     
     @After
     public void tearDown() {
     }
 
-    /**
-     * Test of getColumnNames method, of class BooksMenu.
-     */
-    @Test
-    public void testGetColumnNames() {
-        System.out.println("getColumnNames");
-        BooksMenu instance = new BooksMenu();
-        String[] expResult = null;
-        String[] result = instance.getColumnNames();
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+     @Test
+    public void testValidateBookData_WithValidData_ShouldReturnNull() {
+        System.out.println("Testing validation with all valid data...");
+        String errorMessage = booksMenuPanel.validateBookData(
+            "Clean Code", 
+            "Robert C. Martin", 
+            "978-0132350884"
+        );
+        assertNull("Validation should pass (return null) for correct data.", errorMessage);
     }
 
-    /**
-     * Test of createFormPanel method, of class BooksMenu.
-     */
     @Test
-    public void testCreateFormPanel() {
-        System.out.println("createFormPanel");
-        BooksMenu instance = new BooksMenu();
-        JPanel expResult = null;
-        JPanel result = instance.createFormPanel();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testValidateBookData_WithEmptyTitle_ShouldReturnErrorMessage() {
+        System.out.println("Testing validation with an empty title...");
+        String errorMessage = booksMenuPanel.validateBookData(
+            "", // Invalid title
+            "Robert C. Martin", 
+            "978-0132350884"
+        );
+        assertEquals("Should return a specific error for an empty title.", 
+                     "Book title cannot be empty.", errorMessage);
     }
 
-    /**
-     * Test of convertItemToRow method, of class BooksMenu.
-     */
     @Test
-    public void testConvertItemToRow() {
-        System.out.println("convertItemToRow");
-        Book book = null;
-        BooksMenu instance = new BooksMenu();
-        Object[] expResult = null;
-        Object[] result = instance.convertItemToRow(book);
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testValidateBookData_WithEmptyAuthor_ShouldReturnErrorMessage() {
+        System.out.println("Testing validation with an empty author...");
+        String errorMessage = booksMenuPanel.validateBookData(
+            "Clean Code", 
+            "", // Invalid author
+            "978-0132350884"
+        );
+        assertEquals("Should return a specific error for an empty author.", 
+                     "Author name cannot be empty.", errorMessage);
     }
 
-    /**
-     * Test of getAllItemsFromDatabase method, of class BooksMenu.
-     */
     @Test
-    public void testGetAllItemsFromDatabase() {
-        System.out.println("getAllItemsFromDatabase");
-        BooksMenu instance = new BooksMenu();
-        List<Book> expResult = null;
-        List<Book> result = instance.getAllItemsFromDatabase();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testValidateBookData_WithEmptyBarcode_ShouldReturnErrorMessage() {
+        System.out.println("Testing validation with an empty barcode...");
+        String errorMessage = booksMenuPanel.validateBookData(
+            "Clean Code", 
+            "Robert C. Martin", 
+            "" // Invalid barcode
+        );
+        assertEquals("Should return a specific error for an empty barcode.", 
+                     "Barcode cannot be empty.", errorMessage);
     }
-
-    /**
-     * Test of populateFormWithSelectedItem method, of class BooksMenu.
-     */
+    
     @Test
-    public void testPopulateFormWithSelectedItem() {
-        System.out.println("populateFormWithSelectedItem");
-        BooksMenu instance = new BooksMenu();
-        instance.populateFormWithSelectedItem();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of clearFormFields method, of class BooksMenu.
-     */
-    @Test
-    public void testClearFormFields() {
-        System.out.println("clearFormFields");
-        BooksMenu instance = new BooksMenu();
-        instance.clearFormFields();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of performAdd method, of class BooksMenu.
-     */
-    @Test
-    public void testPerformAdd() {
-        System.out.println("performAdd");
-        BooksMenu instance = new BooksMenu();
-        instance.performAdd();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of performUpdate method, of class BooksMenu.
-     */
-    @Test
-    public void testPerformUpdate() {
-        System.out.println("performUpdate");
-        BooksMenu instance = new BooksMenu();
-        instance.performUpdate();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of performDelete method, of class BooksMenu.
-     */
-    @Test
-    public void testPerformDelete() {
-        System.out.println("performDelete");
-        BooksMenu instance = new BooksMenu();
-        instance.performDelete();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testValidateBookData_WithInvalidBarcodeFormat_ShouldReturnErrorMessage() {
+        System.out.println("Testing validation with a barcode containing letters...");
+        String errorMessage = booksMenuPanel.validateBookData(
+            "Another Book", 
+            "Some Author", 
+            "ABC-123" // Invalid format
+        );
+        assertEquals("Should return an error for a barcode with invalid characters.", 
+                     "Barcode can only contain numbers and dashes.", errorMessage);
     }
     
 }
