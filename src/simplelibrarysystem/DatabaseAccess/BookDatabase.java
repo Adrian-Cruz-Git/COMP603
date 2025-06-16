@@ -21,7 +21,7 @@ public class BookDatabase {
 
     private final Connection conn;
 
-    public BookDatabase() throws SQLException{
+    public BookDatabase(){
         this.conn = DBManager.getInstance().getConnection();
     }
 

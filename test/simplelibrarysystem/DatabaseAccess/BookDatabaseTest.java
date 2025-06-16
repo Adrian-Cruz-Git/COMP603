@@ -60,7 +60,7 @@ public class BookDatabaseTest {
      * method, of class BookDatabase.
      */
     @Test
-    public void testAddBook() {
+    public void testAddBookAndGetAllBooks() throws SQLException {
         assertTrue("Database should be empty at the start.", bookDatabase.getAllBooks().isEmpty());
         Book newBook = new Book("The Pragmatic Programmer", "Andy Hunt", "978-0201616224");
         bookDatabase.addBook(newBook);
@@ -73,7 +73,7 @@ public class BookDatabaseTest {
      * Test of updateBook method, of class BookDatabase.
      */
     @Test
-    public void testUpdateBook() {
+    public void testUpdateBook() throws SQLException {
         Book book = new Book("Original Title", "Original Author", "22222");
         bookDatabase.addBook(book);
         int id = bookDatabase.getAllBooks().get(0).getId();
@@ -88,7 +88,7 @@ public class BookDatabaseTest {
      * Test of deleteBook method, of class BookDatabase.
      */
     @Test
-    public void testDeleteBook() {
+    public void testDeleteBook() throws SQLException {
         Book book = new Book("To Be Deleted", "Author", "11111");
         bookDatabase.addBook(book);
         int idToDelete = bookDatabase.getAllBooks().get(0).getId();

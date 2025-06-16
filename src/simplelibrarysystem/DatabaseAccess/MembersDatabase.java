@@ -4,13 +4,14 @@
  */
 package simplelibrarysystem.DatabaseAccess;
 
-import simplelibrarysystem.DatabaseAccess.DBManager;
 import simplelibrarysystem.model.Member;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Statement;
+import java.sql.ResultSet;
 
 /**
  *
@@ -24,7 +25,7 @@ public class MembersDatabase {
         this.conn = DBManager.getInstance().getConnection();
     }
 
-    public void addMember(Member member) {
+    public void addMember(Member member) throws SQLException {
         String sql = "INSERT INTO MEMBERS (NAME, EMAIL, PHONENUMBER) VALUES(?, ?, ?)";
         try {
             PreparedStatement pS = conn.prepareStatement(sql);
@@ -33,27 +34,39 @@ public class MembersDatabase {
             pS.setString(3, member.getPhonenumber());
             pS.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println("Error with adding member: " + ex);
+            throw ex;
         }
     }
 
-    public List<Member> getAllMembers() {
+    public List<Member> getAllMembers() throws SQLException {
         List<Member> members = new ArrayList<>();
+        String sql = "SELECT * FROM MEMBERS";
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                Member member = new Member(rs.getString("NAME"), rs.getString("EMAIL"), rs.getString("PHONENUMBER"));
+                member.setId(rs.getInt("ID"));
+                members.add(member);
+            }
+        } catch (SQLException ex) {
+            throw ex;
+        }
         return members;
     }
 
-    public void deleteMember(int id) {
+    public void deleteMember(int id) throws SQLException {
         String sql = "DELETE FROM MEMBERS WHERE ID = ?";
         try {
             PreparedStatement pS = conn.prepareStatement(sql);
             pS.setInt(1, id);
             pS.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println("failed to delete member: " + ex);
+            throw ex;
         }
     }
 
-    public void updateMember(Member member) {
+    public void updateMember(Member member) throws SQLException {
         String sql = "UPDATE MEMBERS SET NAME = ?, EMAIL = ?, PHONENUMBER = ? WHERE ID = ?";
         try {
             PreparedStatement pS = conn.prepareStatement(sql);
@@ -61,8 +74,9 @@ public class MembersDatabase {
             pS.setString(2, member.getEmail());
             pS.setString(3, member.getPhonenumber());
             pS.setInt(4, member.getId());
+            pS.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println("Error with updating member: " + ex);
+            throw ex;
         }
     }
 }
