@@ -17,9 +17,9 @@ import javax.swing.JTextField;
  */
 public class LoginMenu extends JFrame {
 
-    private JTextField username;
-    private JTextField password;
-    private AdminsDatabase adminsDatabase;
+    private final JTextField username;
+    private final JTextField password;
+    private final AdminsDatabase adminsDatabase;
 
     public LoginMenu() {
         this.adminsDatabase = new AdminsDatabase();

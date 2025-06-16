@@ -7,7 +7,6 @@ package simplelibrarysystem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import java.awt.*;
 
 /**
  *
@@ -28,11 +27,16 @@ public class loginButtonListener implements ActionListener{
         String username = loginMenu.getUsername().getText();
         String password = loginMenu.getPassword().getText();
         
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(loginMenu, "Username and password cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         if (adminDatabase.checkUsernameAndPassword(username, password)){
             loginMenu.dispose();
             SwingUtilities.invokeLater(() -> {
-            BooksMenu mainFrame = new BooksMenu();
-            mainFrame.setVisible(true);
+            MainMenu mainMenu = new MainMenu();
+            mainMenu.setVisible(true);
         });
             
         } else {

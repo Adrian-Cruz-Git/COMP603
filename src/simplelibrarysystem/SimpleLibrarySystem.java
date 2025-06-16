@@ -17,10 +17,10 @@ public class SimpleLibrarySystem {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-         SwingUtilities.invokeLater(() -> {
+        SwingUtilities.invokeLater(() -> {
             LoginMenu mainFrame = new LoginMenu();
             mainFrame.setVisible(true);
         });
     }
-    
+
 }

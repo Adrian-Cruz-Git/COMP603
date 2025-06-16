@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
  * @author Donut
  */
 public class updateButtonListener implements ActionListener {
+
     private final BooksMenu booksMenu;
     private final BookDatabase bookDatabase;
 
@@ -24,23 +25,23 @@ public class updateButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         int bookId = booksMenu.getSelectedBookId();
-        if (bookId == -1){
+        if (bookId == -1) {
             booksMenu.showMessage("Please select a book to update.", "no selection made", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         String title = booksMenu.getTitleField().getText();
         String author = booksMenu.getAuthorField().getText();
         String barcode = booksMenu.getbarcodeField().getText();
-        
+
         try {
-                bookDatabase.updateBook(new Book(bookId, title, author, barcode));
-                booksMenu.showMessage("book successfully updated", "Success", JOptionPane.INFORMATION_MESSAGE);
-                booksMenu.refreshBookTable();
-                booksMenu.clearFormFields();
-            } catch (Exception ex){
-                booksMenu.showMessage("Failed to update book from database" + ex.getMessage(), "database error", JOptionPane.ERROR_MESSAGE);
-            }
+            bookDatabase.updateBook(new Book(bookId, title, author, barcode));
+            booksMenu.showMessage("book successfully updated", "Success", JOptionPane.INFORMATION_MESSAGE);
+            booksMenu.refreshBookTable();
+            booksMenu.clearFormFields();
+        } catch (Exception ex) {
+            booksMenu.showMessage("Failed to update book from database" + ex.getMessage(), "database error", JOptionPane.ERROR_MESSAGE);
+        }
     }
-    
+
 }

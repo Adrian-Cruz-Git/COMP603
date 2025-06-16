@@ -9,11 +9,12 @@ package simplelibrarysystem;
  * @author Donut
  */
 public class Book {
+
     private int id;
     private String title;
     private String author;
     private String barcode;
-    
+
     public Book(int id, String title, String author, String barcode) {
         this.id = id;
         this.title = title;

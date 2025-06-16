@@ -20,22 +20,21 @@ public class AdminsDatabase {
     public AdminsDatabase() {
         this.conn = DBManager.getInstance().getConnection();
     }
-    
-    public boolean checkUsernameAndPassword(String username, String password){
+
+    public boolean checkUsernameAndPassword(String username, String password) {
         String sql = "SELECT PASSWORD FROM ADMINS WHERE USERNAME = ?";
-        try{
+        try {
             PreparedStatement pS = conn.prepareStatement(sql);
             pS.setString(1, username);
-            
+
             ResultSet rs = pS.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 String databasePassword = rs.getString("PASSWORD");
                 return (databasePassword.equals(password));
             }
-        } catch(SQLException ex){
+        } catch (SQLException ex) {
             System.out.println("Error with check of username and password: " + ex);
         }
         return false;
     }
-
 }

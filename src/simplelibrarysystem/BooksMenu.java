@@ -13,7 +13,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -27,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Donut
  */
-public final class BooksMenu extends JFrame {
+public final class BooksMenu extends JPanel {
 
     // components
     private final BookDatabase bookDatabase;
@@ -39,12 +38,7 @@ public final class BooksMenu extends JFrame {
 
     public BooksMenu() {
         this.bookDatabase = new BookDatabase();
-
-        setTitle("Library Management System");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setVisible(true);
+        setLayout(new BorderLayout(10, 10));
 
         createComponents();
         createLayout();
@@ -53,7 +47,7 @@ public final class BooksMenu extends JFrame {
     }
 
     private void createComponents() {
-        String[] columnNames = {"ID", "Title", "Author", "ISBN"};
+        String[] columnNames = {"ID", "Title", "Author", "Barcode"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int r, int c) {
@@ -75,9 +69,9 @@ public final class BooksMenu extends JFrame {
         setLayout(new BorderLayout(10, 10));
 
         // this is the center panel
-        add(new JScrollPane(bookTable), BorderLayout.CENTER);
+        this.add(new JScrollPane(bookTable), BorderLayout.CENTER);
 
-        add(createBottomPanel(), BorderLayout.SOUTH);
+        this.add(createBottomPanel(), BorderLayout.SOUTH);
 
     }
 

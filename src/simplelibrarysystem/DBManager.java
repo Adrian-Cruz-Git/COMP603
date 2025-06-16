@@ -65,7 +65,7 @@ public final class DBManager {
             }
         }
     }
-    
+
     private void createTablesForMembers() throws SQLException {
         try {
             Statement statement = conn.createStatement();
@@ -86,7 +86,7 @@ public final class DBManager {
             }
         }
     }
-    
+
     private void createTablesForAdmins() throws SQLException {
         try {
             Statement statement = conn.createStatement();
@@ -96,7 +96,7 @@ public final class DBManager {
                     + "PASSWORD VARCHAR(255))";
             statement.executeUpdate(tableToBeCreated);
             System.out.println("Admin table created");
-            
+
             // create default admin login
             statement.execute("INSERT INTO ADMINS(USERNAME, PASSWORD) VALUES('admin','password')");
             System.out.println("default username and password created");
