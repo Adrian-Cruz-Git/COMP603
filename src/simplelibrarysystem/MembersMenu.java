@@ -114,7 +114,17 @@ public final class MembersMenu extends JPanel {
     }
     
     private void createMemberListeners(){
-        
+        addButton.addActionListener(new addMemberListener(this, membersDatabase));
+        updateButton.addActionListener(new updateMemberListener(this, membersDatabase));
+        deleteButton.addActionListener(new deleteMemberListener(this, membersDatabase));
+        clearButton.addActionListener(new clearFormFieldsListener(this, membersDatabase));
+
+        // Listener for table row selection
+        memberTable.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                handleTableSelection();
+            }
+        });
     }
     
     public void refreshMemberTable() {
